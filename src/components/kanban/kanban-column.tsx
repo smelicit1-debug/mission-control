@@ -9,9 +9,10 @@ interface KanbanColumnProps {
   status: TaskStatus
   tasks: Task[]
   isOver?: boolean
+  onAdd?: () => void
 }
 
-export function KanbanColumn({ status, tasks, isOver }: KanbanColumnProps) {
+export function KanbanColumn({ status, tasks, isOver, onAdd }: KanbanColumnProps) {
   const column = columns.find((c) => c.id === status)!
   const taskIds = tasks.map((t) => t.id)
 
@@ -36,9 +37,14 @@ export function KanbanColumn({ status, tasks, isOver }: KanbanColumnProps) {
         <span className="ml-auto rounded bg-[#181818] px-1.5 py-0.5 text-[10px] font-medium tabular-nums text-[#5a5a5a]">
           {tasks.length}
         </span>
-        <button className="text-[#2a2a2a] transition-colors hover:text-[#6b6b6b]">
-          <Plus className="h-3.5 w-3.5" />
-        </button>
+        {status === "backlog" && (
+          <button
+            onClick={onAdd}
+            className="text-[#2a2a2a] transition-colors hover:text-[#6b6b6b]"
+          >
+            <Plus className="h-3.5 w-3.5" />
+          </button>
+        )}
       </div>
 
       {/* Task list */}

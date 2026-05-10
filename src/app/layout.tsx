@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { Sidebar } from "@/components/sidebar"
 import { TopNav } from "@/components/topnav"
+import { TaskProvider } from "@/components/kanban/task-store"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +33,7 @@ export default function RootLayout({
         <div className="pl-60">
           <TopNav />
           <main className="min-h-[calc(100vh-3.5rem)] bg-[#0a0a0a]">
-            {children}
+            <TaskProvider>{children}</TaskProvider>
           </main>
         </div>
       </body>

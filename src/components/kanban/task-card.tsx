@@ -1,7 +1,12 @@
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { cn } from "@/lib/utils"
-import { type Task, priorityColors } from "./task-data"
+import {
+  type Task,
+  priorityColors,
+  assigneeInitials,
+  assigneeColor,
+} from "./task-data"
 import {
   MessageSquare,
   Calendar,
@@ -10,19 +15,15 @@ import {
   Minus,
   ArrowDown,
   GripVertical,
+  Trash2,
 } from "lucide-react"
+import { useTaskStore } from "./task-store"
 
 const priorityIcons = {
   urgent: Zap,
   high: ArrowUp,
   medium: Minus,
   low: ArrowDown,
-}
-
-const assigneeAvatars: Record<string, { initials: string; color: string }> = {
-  user: { initials: "SM", color: "bg-indigo-500" },
-  agent: { initials: "🤖", color: "bg-emerald-500/20" },
-  unassigned: { initials: "—", color: "bg-[#1e1e1e]" },
 }
 
 interface TaskCardProps {
@@ -45,8 +46,10 @@ export function TaskCard({ task, isDragging }: TaskCardProps) {
     transition,
   }
 
+  const { deleteTask } = useTaskStore()
   const PriorityIcon = priorityIcons[task.priority]
-  const avatar = assigneeAvatars[task.assignee]
+  const initials = assigneeInitials(task.assignee)
+  const color = assigneeColor(task.assignee)
 
   return (
     <div
@@ -74,6 +77,12 @@ export function TaskCard({ task, isDragging }: TaskCardProps) {
             className={cn("h-3 w-3", priorityColors[task.priority])}
           />
         </div>
+        <button
+          onClick={() => deleteTask(task.id)}
+          className="text-[#2a2a2a] opacity-0 transition-all hover:text-red-400 group-hover:opacity-100"
+        >
+          <Trash2 className="h-3 w-3" />
+        </button>
       </div>
 
       {/* Title */}
@@ -108,11 +117,11 @@ export function TaskCard({ task, isDragging }: TaskCardProps) {
         <div
           className={cn(
             "flex h-5 w-5 items-center justify-center rounded-full text-[9px] font-medium",
-            avatar.color,
+            color,
             task.assignee === "agent" ? "text-[10px]" : "text-white",
           )}
         >
-          {avatar.initials}
+          {initials}
         </div>
 
         {/* Comments */}
