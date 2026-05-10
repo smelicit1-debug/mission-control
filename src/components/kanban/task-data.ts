@@ -9,6 +9,7 @@ export interface Task {
   priority: TaskPriority
   assignee: "user" | "agent"
   labels: string[]
+  projectId?: string
   createdAt: string
   updatedAt: string
   dueDate?: string

@@ -4,13 +4,16 @@ import { useState } from "react"
 import { X } from "lucide-react"
 import { useTaskStore } from "./task-store"
 import { type TaskPriority } from "./task-data"
+import { useProjectStore } from "../projects/project-store"
 
 interface NewTaskModalProps {
   onClose: () => void
+  defaultProjectId?: string
 }
 
-export function NewTaskModal({ onClose }: NewTaskModalProps) {
+export function NewTaskModal({ onClose, defaultProjectId }: NewTaskModalProps) {
   const { addTask } = useTaskStore()
+  const { projects } = useProjectStore()
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [priority, setPriority] = useState<TaskPriority>("medium")
@@ -18,6 +21,7 @@ export function NewTaskModal({ onClose }: NewTaskModalProps) {
   const [labelInput, setLabelInput] = useState("")
   const [labels, setLabels] = useState<string[]>([])
   const [dueDate, setDueDate] = useState("")
+  const [projectId, setProjectId] = useState(defaultProjectId ?? "")
 
   const handleAddLabel = () => {
     const trimmed = labelInput.trim()
@@ -37,6 +41,7 @@ export function NewTaskModal({ onClose }: NewTaskModalProps) {
       priority,
       assignee,
       labels,
+      projectId: projectId || undefined,
       dueDate: dueDate || undefined,
     })
     onClose()
@@ -161,6 +166,27 @@ export function NewTaskModal({ onClose }: NewTaskModalProps) {
                 ))}
               </div>
             )}
+          </div>
+
+          {/* Project */}
+          <div>
+            <label className="mb-1 block text-[11px] font-medium uppercase tracking-wider text-[#5a5a5a]">
+              Project (optional)
+            </label>
+            <select
+              value={projectId}
+              onChange={(e) => setProjectId(e.target.value)}
+              className="w-full rounded-md border border-[#1e1e1e] bg-[#0a0a0a] px-3 py-2 text-sm text-[#e1e1e1] outline-none focus:border-indigo-500/50"
+            >
+              <option value="">— No project —</option>
+              {projects
+                .filter((p) => p.status !== "completed")
+                .map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name}
+                  </option>
+                ))}
+            </select>
           </div>
 
           {/* Due date */}

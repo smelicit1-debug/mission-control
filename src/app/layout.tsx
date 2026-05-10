@@ -4,6 +4,7 @@ import "./globals.css"
 import { Sidebar } from "@/components/sidebar"
 import { TopNav } from "@/components/topnav"
 import { TaskProvider } from "@/components/kanban/task-store"
+import { ProjectProvider } from "@/components/projects/project-store"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,13 +30,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={geistSans.variable}>
       <body className="font-sans">
-        <Sidebar />
-        <div className="pl-60">
-          <TopNav />
-          <main className="min-h-[calc(100vh-3.5rem)] bg-[#0a0a0a]">
-            <TaskProvider>{children}</TaskProvider>
-          </main>
-        </div>
+        <ProjectProvider>
+          <Sidebar />
+          <div className="pl-60">
+            <TopNav />
+            <main className="min-h-[calc(100vh-3.5rem)] bg-[#0a0a0a]">
+              <TaskProvider>{children}</TaskProvider>
+            </main>
+          </div>
+        </ProjectProvider>
       </body>
     </html>
   )

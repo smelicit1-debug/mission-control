@@ -9,6 +9,7 @@ import {
   Terminal,
   ChevronDown,
   Plus,
+  FolderKanban,
 } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -17,6 +18,7 @@ import { cn } from "@/lib/utils"
 const navItems = [
   { label: "Overview", icon: LayoutDashboard, href: "/" },
   { label: "Board", icon: Columns3, href: "/board" },
+  { label: "Projects", icon: FolderKanban, href: "/projects" },
   { label: "Tools", icon: Puzzle, href: "/tools" },
   { label: "Run History", icon: History, href: "/runs" },
   { label: "Settings", icon: Settings, href: "/settings" },
