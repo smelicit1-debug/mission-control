@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mission Control
 
-## Getting Started
+Custom tools & operator dashboard — Linear-inspired, built with Next.js 16.
 
-First, run the development server:
+**Dashboard:** `https://mission.openclawtank.com`  
+**Repo:** `github.com/smelicit1-debug/mission-control`
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **Styling:** Tailwind CSS 4 + `class-variance-authority`
+- **Icons:** Lucide React
+- **Font:** Geist (Vercel)
+- **Deployment:** Vercel (auto-deploy on push to `main`)
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── layout.tsx        # Root layout (Sidebar + TopNav + Main)
+│   ├── page.tsx          # Overview dashboard (stats, recent tools, activity)
+│   ├── tools/
+│   │   ├── page.tsx      # Tools catalog
+│   │   └── [id]/
+│   │       └── page.tsx  # Individual tool detail (config, runs, danger zone)
+│   ├── runs/
+│   │   └── page.tsx      # Run history
+│   └── settings/
+│       └── page.tsx      # Settings (API keys, integrations, notifications, theme)
+├── components/
+│   ├── sidebar.tsx       # Linear-style dark sidebar
+│   ├── topnav.tsx        # Top bar with search ⌘K, notifications
+│   ├── stat-card.tsx     # Metric card with change indicator
+│   ├── tool-card.tsx     # Tool card with status dot and quick-run
+│   └── recent-runs.tsx   # Activity feed table
+└── lib/
+    └── utils.ts          # cn() utility
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## One-Click Deploy
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/smelicit1-debug/mission-control)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+After deploying:
+1. Go to **Vercel Dashboard > Project > Settings > Domains**
+2. Add `mission.openclawtank.com`
+3. Create a CNAME record in Netlify DNS:
+   - **Type:** CNAME
+   - **Name:** mission
+   - **Target:** `cname.vercel-dns.com`
+   - **TTL:** 3600
 
-## Learn More
+## Development
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install
+npm run dev
+# → http://localhost:3000
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Design Principles
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Dark-only:** True dark theme, `#0a0a0a` background
+- **Linear-inspired:** Clean sidebar, thin borders (`#1e1e1e`), subtle dividers
+- **Accent:** Indigo (`#6366f1`) for CTAs, emerald for success, red for errors
+- **Spacing:** Compact, information-dense layouts
+- **Typography:** Geist sans, 11px-13px body, 15px-18px headings
